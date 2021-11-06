@@ -175,7 +175,8 @@ func NewImage(tokenid string) (NftImage, error) {
 		return NftImage{}, err
 	}
 	number := math.U256(bigint)
-	x := number.Bytes()
+	x := make([]byte, 10)
+	number.FillBytes(x)
 	fmt.Println(x)
 	newNFT := NftImage{
 		MaskSelector:    uint8(x[0]),

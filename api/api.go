@@ -73,7 +73,9 @@ func (a *App) Initialize() {
 
 func (a *App) createNFTHandler(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
+
 	newNFT, err := imageops.NewImage(params["tokenid"])
+	fmt.Println(newNFT)
 	if err != nil {
 		apiErrorHandle500(w, err)
 		return

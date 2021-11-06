@@ -5,6 +5,7 @@ import (
 	"encoding/base64"
 	"fmt"
 	"net/http"
+	"strings"
 
 	"image/png"
 
@@ -26,7 +27,15 @@ func (a *Lapp) Generate(req events.APIGatewayProxyRequest) (events.APIGatewayPro
 	sess := session.Must(session.NewSession())
 	downloader := s3manager.NewDownloader(sess)
 	path := req.PathParameters["proxy"]
-	newNFT, err := imageops.NewImage(path)
+
+	splittedext := strings.Split(path, ".")
+
+	if len(splittedext) != 2 {
+		return events.APIGatewayProxyResponse{
+			StatusCode: http.StatusBadRequest,
+		}, fmt.Errorf("invalid tokenid")
+	}
+	newNFT, err := imageops.NewImage(splittedext[0])
 	if err != nil {
 		return events.APIGatewayProxyResponse{
 			StatusCode: http.StatusBadRequest,
